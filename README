@@ -1,10 +1,9 @@
 README file
 
-To run: (I am not sure yet if all these steps are necessary)
+To run: 
 - download the files
-- npm install express
-- npm install phantomjs
-- npm i
+- run "npm i"
+- run "node index.js"
 
 Practice using nodejs
 

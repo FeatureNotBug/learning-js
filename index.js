@@ -33,13 +33,14 @@ app.get('/process_get', function (req, res) {
         eDate:req.query.endDate
     };
     // adapted from http://stackoverflow.com/questions/9246438/how-to-submit-a-form-using-phantomjs
+    var page = require('webpage').create();
     var steps = [
         function() {
             page.open("https://luckystarbus.com");
         }, 
         function() {
             page.evaluate(function() {
-                var arr = document.getElementsByClassName("bus-form");
+                var arr = document.getElementsByClassName("form1");
                 var i;
                 for (i = 0; i < arr.length; i++) {
                     if (arr[i].getAttribute('method') == "POST") {
@@ -53,6 +54,21 @@ app.get('/process_get', function (req, res) {
                     }
                 }
             });
+        },
+        function() {    // enter form
+            page.evaluate(function() {
+                var arr = document.getElementsByClassName("form1");
+                var i;
+                for (i = 0; i < arr.length; i++) {
+                    if (arr[i].getAttribute('method') == 'POST') {
+                        arr[i].submit();
+                        return;
+                    }
+                }
+            });
+        }, 
+        function() {    // take screenshot
+            
         }
     ];
 /*

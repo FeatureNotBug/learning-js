@@ -1,5 +1,11 @@
 README file
 
+To run: (I am not sure yet if all these steps are necessary)
+- download the files
+- npm install express
+- npm install phantomjs
+- npm i
+
 Practice using nodejs
 
 Gonna try to use nightmare js (and phantomjs) to scrape results for bus tickets from Lucky Star Bus to get screenshots of prices given departure/arrival dates and number of passengers.

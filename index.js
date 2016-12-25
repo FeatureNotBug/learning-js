@@ -1,4 +1,5 @@
 var express = require('express');
+const phantom = require('phantom');
 //var Nightmare = require('nightmare'); // since nightmare is not working
 var app = express();
 

@@ -18,6 +18,7 @@
   "homepage": "https://github.com/FeatureNotBug/learning-node#readme",
   "dependencies": {
     "express": "^4.14.0",
+    "phantom": "^3.2.1",
     "phantomjs": "^1.9.0"
   }
 }

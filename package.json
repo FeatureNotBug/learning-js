@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/FeatureNotBug/learning-node/issues"
   },
-  "homepage": "https://github.com/FeatureNotBug/learning-node#readme"
+  "homepage": "https://github.com/FeatureNotBug/learning-node#readme",
+  "dependencies": {
+    "express": "^4.14.0",
+    "phantomjs": "^1.9.0"
+  }
 }

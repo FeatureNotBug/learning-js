@@ -28,24 +28,13 @@ page.onLoadFinished = function() {
   loadInProgress = false;
   console.log("load finished");
 };
-/*
-page.open('http://www.luckystarbus.com', function (status) {
-    if (status !== 'success') {
-        console.log('Unable to access network');
-    } else {
-        page.render('luckystar.png');
-    }
-    phantom.exit();
-});
-*/
 var steps = [
     function() {
         page.open("http://luckystarbus.com");
     }, 
     function() {
         page.evaluate(function() {
-            //var arr = document.forms[0];//.getElementsByClassName("form1");
-            var arr = document.forms['form1'];//.getElementsByClassName("form1");
+            var arr = document.forms['form1'];
             console.log(arr);
             document.getElementById("__VIEWSTATEGENERATOR").value = "C7C53EDD";
             document.getElementById("__EVENTVALIDATION").value = "/wEdADZWaEXOOe7T5nCnLyAX6KrvaG2wOEvcJO7kzjj/QzScSdhijYc0x/muySSrOthlZAUovNgXMeDuof7j4bDcmOThFuq0YxdLr4dbUgtiAxrMvLaLWH2R03Og21aLB0JAgBeAm2upkN3eWr7aqLitf2rejrVTguiIeGHGNDEBI8fQjbdczThzqzTlBffGfZ9I4iJdU6YkBiKUYx5z+Jhn5kumPFoRWsN7uizH7HS/oiySpfE9ig9Uu/ZcsKjWoqUWDKCz8Py9Y6bGQ/H5TB8jdqeqvlp7pzWaC5besxr+cPXN90eOYW/p0DvIz8mDC4DIirIavJv0/8lnSOelZ1e+pEGQPs9ahPsZkjavrQCDxd1KvFMQQTcWnmGRI9Y3D4AD7NZjAkxjDLaF/YEmxx8pkikp0dcJfjL23sI5qOHk8L1lxN3EXpsNycLsTDKLev6uqz2XZnALgkk3rzdCK6UbVUWCh1fOr9emNqDLYoYyI6QNHc3zJwX3Blr/a2Ns8h6ru3bcpIsbqxWo1cZkHfMq+wz88NmCU9+f/gK3LSYmEBX7MYp5GY0hq++fweO9VjobB9jqIaQqf1B+7RnrCZQQftxWWZS4wB+QHY0xdkLpUcFmOlcRv/FwkW8Imk353DNI9Z1glAmSF9o+MJge2VVeUEDXu4eFfyc8iYTDKiAzOgYGZ2SBpSNKU8J+PVBLFGKlhcs6g8fVng5g3rkLdJEqlxVGYT3bXf7Dtj//TzkYvaD0Q+Dpa07YnRshk2cZjuSbgMzp/yJE8K1Cjfxn5hCwDOljGgHXo/P/clHBgZWuAaCIe5TbxTMOs/B5vIdEx4y13aBxwkgdWMTW3/5zOjGiLw2JRWaE+kvfwH+74u7dlPDFcm5QwZ3Ya/cmoRWt+1GrQGE1cSJZQTx9NZ51d58E9V2eqXN7mLIi5f6v1Qb8fjrI3uG1kYZlARbsM8IYLtcuQj9UuqlD0FB5ysr/1KlJAF2pwZIMdrMfiAPKcrU18cd6Z1mgHuafxcrdB+lTyfOROnycYEvtSl4ChgNkl7BTnKuJGBFJeRTdN/nEk6eYFv95d0PiylQgLr0Y1Of1Rzu+sVHkpLmZQSCXBMr2UV75mBXfGJO8q6fm+VTi8Wh720XM9pQ7WI+Wj8fZP4V+JpaHODQViDHOYHzypY0bLf2oysRMSdShJw==";
@@ -72,12 +61,7 @@ var steps = [
                     el.dispatchEvent(evObj);
                 }
             }
-            //page.sendEvent('click', document.forms['form1'].MainContent_btGo);
-            //document.forms['form1'].MainContent_btGo.click();
-            //document.forms['form1'].submit();
-
             eventFire(document.querySelector("#MainContent_btGo"), 'click');
-            //eventFire(document.forms['form1'].MainContent_btGo, 'click');
         });
     },
     function() {    // take screenshot

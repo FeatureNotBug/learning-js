@@ -8,6 +8,7 @@ To run:
 - download the files
 - run "npm i"
 - run "npm install phantom --save"
+- run "npm install node-phantom"
 - run "node index.js"
 
 Practice using nodejs

@@ -1,5 +1,5 @@
 var express = require('express');
-const phantom = require('phantom');
+var phantom = require('node-phantom');
 //var Nightmare = require('nightmare'); // since nightmare is not working
 var app = express();
 
@@ -33,7 +33,15 @@ app.get('/process_get', function (req, res) {
         sDate:req.query.startDate,
         eDate:req.query.endDate
     };
+    phantom.create(function(err, ph) {
+        return ph.createPage(function(err, page) {
+            return page.open("http://luckystarbus.com", function(err, status) {
+                console.log("Open site? ", status);
+                // do things with page
+        });
+    });
     // adapted from http://stackoverflow.com/questions/9246438/how-to-submit-a-form-using-phantomjs
+/*
     var page = require('webpage').create();
     var steps = [
         function() {
@@ -72,6 +80,7 @@ app.get('/process_get', function (req, res) {
             
         }
     ];
+*/
 /*
     var busInfo = new Nightmare()
         .viewport(1000, 1000)

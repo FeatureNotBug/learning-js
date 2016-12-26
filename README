@@ -11,8 +11,8 @@ To run:
 - run "npm install node-phantom"
 - run "node index.js"
 
-Practice using nodejs
+Practice using javascript!
 
 Goal: use phantomjs to scrape results for bus tickets from Lucky Star Bus to get screenshots of prices given departure/arrival dates and number of passengers.
 
-
+Right now: Starting by writing a standalone js using phantomjs to perform the above

@@ -1,5 +1,21 @@
-var page = require('webpage').create()
+// HTMLParser() from https://developer.mozilla.org/en-US/Add-ons/Code_snippets/HTML_to_DOM#Using_a_hidden_browser_element_to_parse_HTML_to_a_window.27s_DOM
+function HTMLParser(aHTMLString){
+  var html = document.implementation.createDocument("http://www.w3.org/1999/xhtml", "html", null),
+    body = document.createElementNS("http://www.w3.org/1999/xhtml", "body");
+  html.documentElement.appendChild(body);
+
+  body.appendChild(Components.classes["@mozilla.org/feed-unescapehtml;1"]
+    .getService(Components.interfaces.nsIScriptableUnescapeHTML)
+    .parseFragment(aHTMLString, false, null, body));
+
+  return body;
+}
+
+/* PART 1: Open the page and input the form */
+var page = require('webpage').create();
+var fs = require('fs');
 var testindex = 0, loadInProgress = false;
+var resultPageHTML;
 page.onError = function(msg, trace) {
 
   var msgStack = ['ERROR: ' + msg];
@@ -28,6 +44,44 @@ page.onLoadFinished = function() {
   loadInProgress = false;
   console.log("load finished");
 };
+
+
+
+
+/* PART 2: Want to parse HTML output to get the times and prices. */
+//var DOMPars = HTMLParser(resultPageHTML);
+/*
+var div = document.createElement('div');
+div.innerHTML = resultPageHTML;
+var elements = div.childNodes;
+console.log("elements");
+console.log(elements);
+*/
+function parseHTML() {
+    var regEx = /(<td align="center">(.*)M<\/td>)|(<td align="center" style="width:75px;">(.*)<\/td>)/g
+    //var regEx = /(<td align="center">(.*)M<\/td>)|(\$(.*)\n<\/td>)/g
+    // from http://stackoverflow.com/questions/7280586/javascript-regex-access-multiple-occurrences
+    var timeMatches = [];
+    var match = [];
+    while ((match = regEx.exec(resultPageHTML)) != null) {
+        timeMatches.push(match[2]);         /* since each match is of form <td align="center">07:00 AM</td>,<td align="center">07:00 AM</td>,07:00 A,, */
+    }
+    console.log(resultPageHTML);
+    console.log('matches');
+    console.log(timeMatches);
+    var costRegEx = /<td align="center" style="width:75px;">(.*)<\/td>/g;      /* for some reason this part of regEx is never found, so I'm doing it separately */
+    var costMatches = [];
+    while ((match = costRegEx.exec(resultPageHTML)) != null) {
+        console.log(match);
+        console.log("GTFO");
+        costMatches.push(match[0]);         /* since each match is of form <td align="center">07:00 AM</td>,<td align="center">07:00 AM</td>,07:00 A,, */
+    }
+    console.log(costMatches);
+}
+
+
+
+
 var steps = [
     function() {
         page.open("http://luckystarbus.com");
@@ -43,7 +97,7 @@ var steps = [
             arr.MainContent_numPassengers.value = 1;
             arr.MainContent_ddDepartureCity.value = "New York City, NY";
             arr.MainContent_ddArrivalCity.value="2";
-            arr.MainContent_sd.value = "12/27/2016";
+            arr.MainContent_sd.value = "1/28/2017";
 //setTimeout(function(){}, 2000);
             //arr.MainContent_ed.value = "12/27/2016";
             arr.MainContent_rbFareType_0.checked = "checked";
@@ -67,6 +121,9 @@ var steps = [
     function() {    // take screenshot
         console.log("Step 4: taking the screenshot");
         page.render('luckystar.png');
+        // copy HTML to file
+        fs.write('luckystar.html', page.content, 'w');
+        resultPageHTML = page.content;
     }
 ];
 
@@ -78,6 +135,9 @@ var interval = setInterval(function() {
   }
   if (typeof steps[testindex] != "function") {
     console.log("test complete!");
+    parseHTML();
+    console.log("afewfqef");
     phantom.exit();
   }
-}, 5000);
+}, 500);
+

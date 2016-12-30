@@ -73,10 +73,22 @@ function parseHTML() {
     var costMatches = [];
     while ((match = costRegEx.exec(resultPageHTML)) != null) {
         console.log(match);
-        console.log("GTFO");
+        console.log("got here");
         costMatches.push(match[0]);         /* since each match is of form <td align="center">07:00 AM</td>,<td align="center">07:00 AM</td>,07:00 A,, */
     }
     console.log(costMatches);
+
+    /*
+        /////////
+        doing it from the file as opposed to from the html as a var
+    */
+    var timeRegEx = /<td align="center">(.*)M<\/td>/;
+    var lineReader = require('readline').createInterface({
+        input:require('fs').createReadStream('luckystarbus.html')
+    });
+    lineReader.on('line', function(line) {
+        
+    });
 }
 
 

@@ -61,20 +61,21 @@ function parseHTML() {
     var regEx = /(<td align="center">(.*)M<\/td>)|(<td align="center" style="width:75px;">(.*)<\/td>)/g
     //var regEx = /(<td align="center">(.*)M<\/td>)|(\$(.*)\n<\/td>)/g
     // from http://stackoverflow.com/questions/7280586/javascript-regex-access-multiple-occurrences
+/*
     var timeMatches = [];
     var match = [];
     while ((match = regEx.exec(resultPageHTML)) != null) {
-        timeMatches.push(match[2]);         /* since each match is of form <td align="center">07:00 AM</td>,<td align="center">07:00 AM</td>,07:00 A,, */
+        timeMatches.push(match[2]);         // since each match is of form <td align="center">07:00 AM</td>,<td align="center">07:00 AM</td>,07:00 A,, 
     }
     console.log(resultPageHTML);
     console.log('matches');
     console.log(timeMatches);
-    var costRegEx = /<td align="center" style="width:75px;">(.*)<\/td>/g;      /* for some reason this part of regEx is never found, so I'm doing it separately */
+    var costRegEx = /<td align="center" style="width:75px;">(.*)<\/td>/mg;      // for some reason this part of regEx is never found, so I'm doing it separately 
     var costMatches = [];
     while ((match = costRegEx.exec(resultPageHTML)) != null) {
         console.log(match);
         console.log("got here");
-        costMatches.push(match[0]);         /* since each match is of form <td align="center">07:00 AM</td>,<td align="center">07:00 AM</td>,07:00 A,, */
+        costMatches.push(match[0]);         // since each match is of form <td align="center">07:00 AM</td>,<td align="center">07:00 AM</td>,07:00 A,, 
     }
     console.log(costMatches);
 
@@ -82,13 +83,34 @@ function parseHTML() {
         /////////
         doing it from the file as opposed to from the html as a var
     */
+    var match = [];
     var timeRegEx = /<td align="center">(.*)M<\/td>/;
+
+    fs.read('./luckystar.html').toString().split('\n').forEach(function(line) {
+    //console.log(line);
+        if ((match = line.match(timeRegEx)) != null) {
+            timeMatches.push(match[1]);
+        }
+    });
+    console.log(timeMatches);
+/*
+var lineReader = require('readline').createInterface({
+  input: require('fs').createReadStream('luckystar.html')
+});
+
+lineReader.on('line', function (line) {
+  console.log('Line from file:', line);
+});
+
+/*
     var lineReader = require('readline').createInterface({
-        input:require('fs').createReadStream('luckystarbus.html')
+        input:fs.createReadStream('luckystar.html')
     });
     lineReader.on('line', function(line) {
-        
+        match = timeRegEx(line);
+        console.log(match);
     });
+*/
 }
 
 

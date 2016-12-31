@@ -61,14 +61,16 @@ function parseHTML() {
     }
 
     // test using spawn
-    var exec = require('child_process').exec;
-    const rn = exec(['mv', 'new.csv', 'old.csv'], function(error, stdout, stderr) {
+    var child_process = require('child_process');
+    child_process.spawn('mv', ['new.csv', 'old.csv'], function(error, stdout, stderr) {
         console.log('stdout: ', stdout);
         console.log('stderr: ', stderr);
         if (error !== null) {
-            console.log('exec error: ', error);
-        }
+            console.log('spawn error: ', error);
+        } 
     });
+    setTimeout(function(){}, 5000);
+    console.log("got here");
     // diff with old.txt
 }
 

@@ -6,12 +6,11 @@
 ## Using:
 - node v7.2.1
 - npm v3.10.10
-- phantomjs 1.9.0
+Other dependencies can be found in package.json
 
 ## To run: 
 - download the files
 - run "npm i"
-- run "npm install phantom --save"
 
 1) getTixInfo.js
 - run "phantomjs getTixInfo.js"
@@ -19,7 +18,4 @@
 2) index.js
 - run "npm install node-phantom"
 - run "node index.js"
-
-
-Goal: use phantomjs to scrape results for bus tickets from Lucky Star Bus to get screenshots of prices given departure/arrival dates and number of passengers.
 

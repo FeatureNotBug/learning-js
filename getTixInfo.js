@@ -51,6 +51,25 @@ function parseHTML() {
     });
     console.log(timeMatches);
     console.log(costMatches);
+    // write it to csv
+    var i;
+    var toWrite;
+    fs.write('new.csv', '', 'w');
+    for (i = 0; i < timeMatches.length; i++) {
+        toWrite = timeMatches[i]+","+costMatches[i]+"\n";
+        fs.write('new.csv', toWrite, 'a');
+    }
+
+    // test using spawn
+    var exec = require('child_process').exec;
+    const rn = exec(['mv', 'new.csv', 'old.csv'], function(error, stdout, stderr) {
+        console.log('stdout: ', stdout);
+        console.log('stderr: ', stderr);
+        if (error !== null) {
+            console.log('exec error: ', error);
+        }
+    });
+    // diff with old.txt
 }
 
 var steps = [

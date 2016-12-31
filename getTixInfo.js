@@ -1,16 +1,3 @@
-// HTMLParser() from https://developer.mozilla.org/en-US/Add-ons/Code_snippets/HTML_to_DOM#Using_a_hidden_browser_element_to_parse_HTML_to_a_window.27s_DOM
-function HTMLParser(aHTMLString){
-  var html = document.implementation.createDocument("http://www.w3.org/1999/xhtml", "html", null),
-    body = document.createElementNS("http://www.w3.org/1999/xhtml", "body");
-  html.documentElement.appendChild(body);
-
-  body.appendChild(Components.classes["@mozilla.org/feed-unescapehtml;1"]
-    .getService(Components.interfaces.nsIScriptableUnescapeHTML)
-    .parseFragment(aHTMLString, false, null, body));
-
-  return body;
-}
-
 /* PART 1: Open the page and input the form */
 var page = require('webpage').create();
 var fs = require('fs');
@@ -45,76 +32,26 @@ page.onLoadFinished = function() {
   console.log("load finished");
 };
 
-
-
-
 /* PART 2: Want to parse HTML output to get the times and prices. */
-//var DOMPars = HTMLParser(resultPageHTML);
-/*
-var div = document.createElement('div');
-div.innerHTML = resultPageHTML;
-var elements = div.childNodes;
-console.log("elements");
-console.log(elements);
-*/
 function parseHTML() {
-    var regEx = /(<td align="center">(.*)M<\/td>)|(<td align="center" style="width:75px;">(.*)<\/td>)/g
-    //var regEx = /(<td align="center">(.*)M<\/td>)|(\$(.*)\n<\/td>)/g
-    // from http://stackoverflow.com/questions/7280586/javascript-regex-access-multiple-occurrences
-/*
     var timeMatches = [];
-    var match = [];
-    while ((match = regEx.exec(resultPageHTML)) != null) {
-        timeMatches.push(match[2]);         // since each match is of form <td align="center">07:00 AM</td>,<td align="center">07:00 AM</td>,07:00 A,, 
-    }
-    console.log(resultPageHTML);
-    console.log('matches');
-    console.log(timeMatches);
-    var costRegEx = /<td align="center" style="width:75px;">(.*)<\/td>/mg;      // for some reason this part of regEx is never found, so I'm doing it separately 
     var costMatches = [];
-    while ((match = costRegEx.exec(resultPageHTML)) != null) {
-        console.log(match);
-        console.log("got here");
-        costMatches.push(match[0]);         // since each match is of form <td align="center">07:00 AM</td>,<td align="center">07:00 AM</td>,07:00 A,, 
-    }
-    console.log(costMatches);
-
-    /*
-        /////////
-        doing it from the file as opposed to from the html as a var
-    */
     var match = [];
     var timeRegEx = /<td align="center">(.*)M<\/td>/;
 
+    var timeFound = false; // flag set so I know price is on next line
     fs.read('./luckystar.html').toString().split('\n').forEach(function(line) {
-    //console.log(line);
         if ((match = line.match(timeRegEx)) != null) {
             timeMatches.push(match[1]);
+            timeFound = true;
+        } else if (timeFound) {
+            timeFound = false;
+            costMatches.push(line.trim());
         }
     });
     console.log(timeMatches);
-/*
-var lineReader = require('readline').createInterface({
-  input: require('fs').createReadStream('luckystar.html')
-});
-
-lineReader.on('line', function (line) {
-  console.log('Line from file:', line);
-});
-
-/*
-    var lineReader = require('readline').createInterface({
-        input:fs.createReadStream('luckystar.html')
-    });
-    lineReader.on('line', function(line) {
-        match = timeRegEx(line);
-        console.log(match);
-    });
-*/
+    console.log(costMatches);
 }
-
-
-
 
 var steps = [
     function() {
@@ -170,7 +107,6 @@ var interval = setInterval(function() {
   if (typeof steps[testindex] != "function") {
     console.log("test complete!");
     parseHTML();
-    console.log("afewfqef");
     phantom.exit();
   }
 }, 500);

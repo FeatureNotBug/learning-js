@@ -74,6 +74,7 @@ function parseHTML() {
         var timeDiff = timeData.filter(function(x) { return timeMatches.indexOf(x) < 0});
         var costDiff = costData.filter(function(x) { return costMatches.indexOf(x) < 0});
         if (timeDiff.length > 0 || costDiff.length > 0) {
+            // the information has changed. Alert user
             console.log("Status change:");
             console.log("Original status:");
             console.log(timeData);
@@ -81,8 +82,15 @@ function parseHTML() {
             console.log("\nCurrent status:");
             console.log(timeMatches);
             console.log(costMatches);
+            fs.write(fname, '', 'w');
+            // write the new data into the file
+            for (i = 0; i < timeMatches.length; i++) {
+                toWrite = timeMatches[i]+","+costMatches[i]+"\n";
+                fs.write(fname, toWrite, 'a');
+            }
         }
     } else {
+        console.log("Initial run; data.csv is now being written.");
         fs.write(fname, '', 'w');
         for (i = 0; i < timeMatches.length; i++) {
             toWrite = timeMatches[i]+","+costMatches[i]+"\n";

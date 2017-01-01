@@ -2,6 +2,8 @@
 
 ## Files:
 - getTixInfo.js: given a departure date (right now needs to be manually changed in code), enter the data into the form on luckystarbus.com. Output the times and costs for buses from New York to Boston on that day, and take a screenshot of the page, as well.
+    - keep a record of this data and every time program is run, compare against old data
+    - TODO: If different, overwrite and email to user (me)
 
 ## Using:
 - node v7.2.1

@@ -52,26 +52,67 @@ function parseHTML() {
     console.log(timeMatches);
     console.log(costMatches);
     // write it to csv
+    var child_process = require('child_process');
     var i;
     var toWrite;
-    fs.write('new.csv', '', 'w');
+    const fname = 'data.csv';
+    // read from the current data.csv and check if it is the same as the new data
+    if (fs.exists(fname)) {
+        // process the csv
+        var timeData = [];
+        var costData = [];
+        fs.read('data.csv').toString().split('\n').forEach(function(line) {
+            timeData.push(line.split(',')[0]);
+            costData.push(line.split(',')[1]);
+        });
+        timeData.pop();         // get rid of the ending comma
+        costData.pop();         // get rid of the ending comma
+        console.log(timeData);
+        console.log(costData);
+        
+        // compare this to the new data
+        var timeDiff = timeData.filter(function(x) { return timeMatches.indexOf(x) < 0});
+        var costDiff = costData.filter(function(x) { return costMatches.indexOf(x) < 0});
+        if (timeDiff.length > 0 || costDiff.length > 0) {
+            console.log("Status change:");
+            console.log("Original status:");
+            console.log(timeData);
+            console.log(costData);
+            console.log("\nCurrent status:");
+            console.log(timeMatches);
+            console.log(costMatches);
+        }
+    } else {
+        fs.write(fname, '', 'w');
+        for (i = 0; i < timeMatches.length; i++) {
+            toWrite = timeMatches[i]+","+costMatches[i]+"\n";
+            fs.write(fname, toWrite, 'a');
+        }
+    }
+/*
+    if (fs.exists('./new.csv')) {
+        //setTimeout(function() {
+        child_process.spawn('cp', ['-p', 'new.csv', 'old.csv'], function(error, stdout, stderr) {
+            console.log('stdout: ', stdout);
+            console.log('stderr: ', stderr);
+            if (error !== null) {
+                console.log('spawn error: ', error);
+            } 
+        });
+        //}, 2000);
+    }
+    //return;
+    //setTimeout(function(){}, 5000);
+    fs.write(fname, '', 'w');
     for (i = 0; i < timeMatches.length; i++) {
         toWrite = timeMatches[i]+","+costMatches[i]+"\n";
-        fs.write('new.csv', toWrite, 'a');
+        fs.write(fname, toWrite, 'a');
     }
 
-    // test using spawn
-    var child_process = require('child_process');
-    child_process.spawn('mv', ['new.csv', 'old.csv'], function(error, stdout, stderr) {
-        console.log('stdout: ', stdout);
-        console.log('stderr: ', stderr);
-        if (error !== null) {
-            console.log('spawn error: ', error);
-        } 
-    });
     setTimeout(function(){}, 5000);
     console.log("got here");
     // diff with old.txt
+*/
 }
 
 var steps = [

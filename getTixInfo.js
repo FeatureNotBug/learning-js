@@ -1,4 +1,5 @@
 /* PART 1: Open the page and input the form */
+var path = '/home/ychinlee/Documents/scraper/';
 var page = require('webpage').create();
 var fs = require('fs');
 var testindex = 0, loadInProgress = false;
@@ -55,7 +56,7 @@ function parseHTML() {
     var child_process = require('child_process');
     var i;
     var toWrite;
-    const fname = 'data.csv';
+    const fname = path+'data.csv';
     // read from the current data.csv and check if it is the same as the new data
     if (fs.exists(fname)) {
         // process the csv
@@ -77,14 +78,14 @@ function parseHTML() {
         console.log('costdiff', costDiff);
         if (timeDiff.length > 0 || costDiff.length > 0) {
             // the information has changed. Alert user
-            const msgFname = 'msg.txt';
+            const msgFname = path+'msg.txt';
             const address = 'ychinlee@ubuntu';
             var body = "Original status:\n"+timeData+"\n"+costData+"\n\nCurrent status:\n"
                         +timeMatches+"\n"+costMatches
             
             fs.write(msgFname, body, 'w');
             var child_process = require('child_process');
-            child_process.spawn('mail.sh', [msgFname, address], 
+            child_process.spawn(path+'mail.sh', [msgFname, address], 
             function(error, stdout, stderr){
                 if (error != null) {
                     console.log('spawn error: ', error);
@@ -146,9 +147,9 @@ var steps = [
     },
     function() {    // take screenshot
         console.log("Step 4: taking the screenshot");
-        page.render('luckystar.png');
+        page.render(path+'luckystar.png');
         // copy HTML to file
-        fs.write('luckystar.html', page.content, 'w');
+        fs.write(path+'luckystar.html', page.content, 'w');
         resultPageHTML = page.content;
     }
 ];

@@ -79,9 +79,13 @@ function parseHTML() {
         if (timeDiff.length > 0 || costDiff.length > 0) {
             // the information has changed. Alert user
             const msgFname = path+'msg.txt';
-            const address = 'ychinlee@ubuntu';
-            var body = "Original status:\n"+timeData+"\n"+costData+"\n\nCurrent status:\n"
-                        +timeMatches+"\n"+costMatches
+            const address = 'ychinlee.2@gmail.com';
+            //var body = "\nOriginal status:\n"+timeData+"\n"+costData+"\n\nCurrent status:\n"
+             //           +timeMatches+"\n"+costMatches
+            var body = "\nOriginal status:\n"
+            for (i = 0; i < timeData.length; i++) body += timeData[i]+', '+costData[i]+'\n';
+            body += '\nCurrent status:\n';
+            for (i = 0; i < timeMatches.length; i++) body += timeMatches[i]+', '+costMatches[i]+'\n';
             
             fs.write(msgFname, body, 'w');
             var child_process = require('child_process');
@@ -99,6 +103,7 @@ function parseHTML() {
                 fs.write(fname, toWrite, 'a');
             }
         }
+        console.log("difference found, alert sent");
     } else {
         console.log("Initial run; data.csv is now being written.");
         fs.write(fname, '', 'w');
@@ -146,7 +151,6 @@ var steps = [
         });
     },
     function() {    // take screenshot
-        console.log("Step 4: taking the screenshot");
         page.render(path+'luckystar.png');
         // copy HTML to file
         fs.write(path+'luckystar.html', page.content, 'w');

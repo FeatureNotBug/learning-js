@@ -76,19 +76,15 @@ function parseHTML() {
         console.log('timediff', timeDiff);
         console.log('costdiff', costDiff);
         if (timeDiff.length > 0 || costDiff.length > 0) {
-            console.log('wtfff');
             // the information has changed. Alert user
             const msgFname = 'msg.txt';
-            const subject = "Status change";
             const address = 'ychinlee@ubuntu';
             var body = "Original status:\n"+timeData+"\n"+costData+"\n\nCurrent status:\n"
                         +timeMatches+"\n"+costMatches
             
             fs.write(msgFname, body, 'w');
-            // echo body | mail -s subject ychinlee@ubuntu
             var child_process = require('child_process');
-            //child_process.spawn('echo', [body, '|', 'mail', '-s', subject, address], 
-            child_process.spawn('mutt', ['-s', subject, address, '-a', msgFname], 
+            child_process.spawn('mail.sh', [msgFname, address], 
             function(error, stdout, stderr){
                 if (error != null) {
                     console.log('spawn error: ', error);
@@ -110,30 +106,6 @@ function parseHTML() {
             fs.write(fname, toWrite, 'a');
         }
     }
-/*
-    if (fs.exists('./new.csv')) {
-        //setTimeout(function() {
-        child_process.spawn('cp', ['-p', 'new.csv', 'old.csv'], function(error, stdout, stderr) {
-            console.log('stdout: ', stdout);
-            console.log('stderr: ', stderr);
-            if (error !== null) {
-                console.log('spawn error: ', error);
-            } 
-        });
-        //}, 2000);
-    }
-    //return;
-    //setTimeout(function(){}, 5000);
-    fs.write(fname, '', 'w');
-    for (i = 0; i < timeMatches.length; i++) {
-        toWrite = timeMatches[i]+","+costMatches[i]+"\n";
-        fs.write(fname, toWrite, 'a');
-    }
-
-    setTimeout(function(){}, 5000);
-    console.log("got here");
-    // diff with old.txt
-*/
 }
 
 var steps = [

@@ -49,8 +49,8 @@ function parseHTML() {
             costMatches.push(line.trim());
         }
     });
-    console.log(timeMatches);
-    console.log(costMatches);
+    console.log('timematches', timeMatches);
+    console.log('costmatches', costMatches);
     // write it to csv
     var child_process = require('child_process');
     var i;
@@ -61,27 +61,40 @@ function parseHTML() {
         // process the csv
         var timeData = [];
         var costData = [];
-        fs.read('data.csv').toString().split('\n').forEach(function(line) {
+        fs.read(fname).toString().split('\n').forEach(function(line) {
             timeData.push(line.split(',')[0]);
             costData.push(line.split(',')[1]);
         });
         timeData.pop();         // get rid of the ending comma
         costData.pop();         // get rid of the ending comma
-        console.log(timeData);
-        console.log(costData);
+        console.log('timedata', timeData);
+        console.log('costdata', costData);
         
         // compare this to the new data
         var timeDiff = timeData.filter(function(x) { return timeMatches.indexOf(x) < 0});
         var costDiff = costData.filter(function(x) { return costMatches.indexOf(x) < 0});
+        console.log('timediff', timeDiff);
+        console.log('costdiff', costDiff);
         if (timeDiff.length > 0 || costDiff.length > 0) {
+            console.log('wtfff');
             // the information has changed. Alert user
-            console.log("Status change:");
-            console.log("Original status:");
-            console.log(timeData);
-            console.log(costData);
-            console.log("\nCurrent status:");
-            console.log(timeMatches);
-            console.log(costMatches);
+            const msgFname = 'msg.txt';
+            const subject = "Status change";
+            const address = 'ychinlee@ubuntu';
+            var body = "Original status:\n"+timeData+"\n"+costData+"\n\nCurrent status:\n"
+                        +timeMatches+"\n"+costMatches
+            
+            fs.write(msgFname, body, 'w');
+            // echo body | mail -s subject ychinlee@ubuntu
+            var child_process = require('child_process');
+            //child_process.spawn('echo', [body, '|', 'mail', '-s', subject, address], 
+            child_process.spawn('mutt', ['-s', subject, address, '-a', msgFname], 
+            function(error, stdout, stderr){
+                if (error != null) {
+                    console.log('spawn error: ', error);
+                } 
+            });
+
             fs.write(fname, '', 'w');
             // write the new data into the file
             for (i = 0; i < timeMatches.length; i++) {

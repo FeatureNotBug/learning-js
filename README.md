@@ -5,10 +5,13 @@
     - keep a record of this data and every time program is run, compare against old data
     - if data has changed, send (using Mutt) a message to the user with the old and new data
 
+- index.js, index.html: trying out making a page with links in node
+
 ## Using:
 - node v7.2.1
 - npm v3.10.10
 - Mutt 1.5.21
+
 Other dependencies can be found in package.json
 
 ## To run: 

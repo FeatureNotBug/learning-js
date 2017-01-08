@@ -129,7 +129,7 @@ var steps = [
             arr.MainContent_numPassengers.value = 1;
             arr.MainContent_ddDepartureCity.value = "New York City, NY";
             arr.MainContent_ddArrivalCity.value="2";
-            arr.MainContent_sd.value = "1/28/2017";
+            arr.MainContent_sd.value = "1/19/2017";
 //setTimeout(function(){}, 2000);
             //arr.MainContent_ed.value = "12/27/2016";
             arr.MainContent_rbFareType_0.checked = "checked";
